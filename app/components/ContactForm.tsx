@@ -7,6 +7,11 @@ type Status = "idle" | "submitting" | "success" | "error";
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
 
+  // FormSubmit delivers straight to the inbox from the browser — no server
+  // route needed, so it works regardless of how the site is hosted. The very
+  // first submission triggers a one-time activation email to that inbox.
+  const ENDPOINT = "https://formsubmit.co/ajax/domains@digitalnomads.com";
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -17,19 +22,19 @@ export default function ContactForm() {
 
     setStatus("submitting");
     try {
-      const res = await fetch("/api/lead", {
+      const res = await fetch(ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           name: data.get("name"),
           email: data.get("email"),
-          domain: data.get("domain"),
-          message: data.get("message"),
-          honeypot: data.get("bot-field"),
+          domain: data.get("domain") || "(not specified)",
+          message: data.get("message") || "(no message)",
+          _subject: "New DigitalNomads.com inquiry",
         }),
       });
-      const result = (await res.json().catch(() => null)) as { ok?: boolean } | null;
-      if (res.ok && result?.ok) {
+      const result = (await res.json().catch(() => null)) as { success?: boolean | string } | null;
+      if (res.ok && result && (result.success === true || result.success === "true")) {
         setStatus("success");
         form.reset();
       } else {
