@@ -1,16 +1,21 @@
+import Link from "next/link";
 import type { Metadata } from "next";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | DigitalNomads.com",
+  title: "Terms of Service — DigitalNomads.com",
 };
 
 export default function TermsPage() {
   return (
     <>
-      <SiteHeader />
       <div className="max-w-2xl mx-auto px-6 py-16">
+        <Link
+          href="/"
+          className="text-sm text-neutral-400 hover:text-neutral-700 transition-colors mb-10 inline-block"
+        >
+          ← Back to home
+        </Link>
+
         <h1 className="text-3xl font-bold tracking-tight mb-2">Terms of Service</h1>
         <p className="text-sm text-neutral-400 mb-10">Last updated: May 2026</p>
 
@@ -90,14 +95,22 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-neutral-900 mb-2">8. Contact</h2>
             <p>
-              Questions about these Terms of Service can be directed to our team
-              through the contact form on our website.
+              Questions about these Terms of Service can be directed to our team at
+              domains [at] digitalnomads.com.
             </p>
           </section>
         </div>
       </div>
 
-      <SiteFooter />
+      <footer className="border-t border-neutral-100 px-6 py-6 mt-8">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-neutral-400">
+          <span>© {new Date().getFullYear()} DigitalNomads.com. All rights reserved.</span>
+          <nav className="flex gap-5">
+            <a href="/privacy" className="hover:text-neutral-700 transition-colors">Privacy</a>
+            <a href="/terms" className="hover:text-neutral-700 transition-colors">Terms</a>
+          </nav>
+        </div>
+      </footer>
     </>
   );
 }
