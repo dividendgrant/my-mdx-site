@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { evaluate } from "@mdx-js/mdx";
-import * as runtime from "react/jsx-runtime";
-import remarkGfm from "remark-gfm";
 import { articles, getArticle } from "@/lib/articles";
-import { mdxComponents } from "@/components/mdx-components";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
@@ -36,12 +32,6 @@ export default async function ArticlePage({
   const article = getArticle(slug);
   if (!article) notFound();
 
-  // Compile the MDX body string into a component (GFM enabled for tables).
-  const { default: MDXBody } = await evaluate(article.content, {
-    ...runtime,
-    remarkPlugins: [remarkGfm],
-  });
-
   return (
     <>
       <SiteHeader />
@@ -62,9 +52,10 @@ export default async function ArticlePage({
         <div className="relative w-full rounded-2xl overflow-hidden mb-10" style={{ aspectRatio: "16/9" }}>
           <Image src={article.image} alt={article.title} fill className="object-cover" sizes="(min-width:768px) 768px, 100vw" priority />
         </div>
-        <div className="[&>p:first-of-type]:text-xl [&>p:first-of-type]:text-neutral-800 [&>p:first-of-type]:leading-relaxed">
-          <MDXBody components={mdxComponents} />
-        </div>
+        <div
+          className="article-body"
+          dangerouslySetInnerHTML={{ __html: article.html }}
+        />
 
         <div className="mt-12 pt-8 border-t border-neutral-100">
           <Link href="/#nomad" className="text-brand-blue font-semibold hover:underline text-sm">

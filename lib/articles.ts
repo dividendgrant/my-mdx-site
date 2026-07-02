@@ -1,46 +1,18 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+// Runtime-safe: imports pre-rendered article data (bundled JSON). No `fs`,
+// no markdown/MDX compiler at runtime — safe for the Cloudflare Worker.
+// The JSON is produced at build time by scripts/gen-articles.mjs.
+import data from "./articles.generated.json";
 
-const CONTENT_DIR = path.join(process.cwd(), "content");
-
-export type ArticleMeta = {
-  title: string;
+export type Article = {
   slug: string;
-  image: string;
+  title: string;
   description: string;
+  image: string;
+  html: string;
 };
 
-export type Article = ArticleMeta & { content: string };
+export const articles: Article[] = data as Article[];
 
-const ORDER = [
-  "90-day-tether",
-  "arbitrage-algorithm",
-  "loneliness-ladder",
-  "moving-parts",
-];
-
-function readMeta(slug: string): ArticleMeta {
-  const raw = fs.readFileSync(path.join(CONTENT_DIR, `${slug}.mdx`), "utf8");
-  const { data } = matter(raw);
-  return { ...(data as Omit<ArticleMeta, "slug">), slug };
-}
-
-export function getAllSlugs(): string[] {
-  const found = fs
-    .readdirSync(CONTENT_DIR)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(/\.mdx$/, ""));
-  const ordered = ORDER.filter((s) => found.includes(s));
-  const extras = found.filter((s) => !ORDER.includes(s)).sort();
-  return [...ordered, ...extras];
-}
-
-export const articles: ArticleMeta[] = getAllSlugs().map(readMeta);
-
-export function getArticle(slug: string): Article | null {
-  const fp = path.join(CONTENT_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(fp)) return null;
-  const { data, content } = matter(fs.readFileSync(fp, "utf8"));
-  return { ...(data as Omit<ArticleMeta, "slug">), slug, content };
+export function getArticle(slug: string): Article | undefined {
+  return articles.find((a) => a.slug === slug);
 }

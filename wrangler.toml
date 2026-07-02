@@ -1,7 +1,0 @@
-name = "my-mdx-site"
-compatibility_date = "2024-09-23"
-
-# Static-assets-only Worker: serves the Next.js static export in ./out.
-# No `main` / server code, so there is no runtime that can error.
-[assets]
-directory = "./out"
