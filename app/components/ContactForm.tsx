@@ -12,7 +12,7 @@ export default function ContactForm() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    // Honeypot — bots fill this, humans don't
+    // Honeypot: bots fill this, humans don't
     if (data.get("bot-field")) return;
 
     setStatus("submitting");
@@ -51,7 +51,7 @@ export default function ContactForm() {
     >
       <input type="hidden" name="form-name" value="domain-inquiry" />
 
-      {/* Honeypot — visually hidden, accessible to bots */}
+      {/* Honeypot: visually hidden, accessible to bots */}
       <div aria-hidden="true" className="absolute -left-[9999px]">
         <label>
           Leave this empty
@@ -68,7 +68,7 @@ export default function ContactForm() {
             type="text"
             name="name"
             required
-            className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+            className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             placeholder="Your name"
           />
         </div>
@@ -80,7 +80,7 @@ export default function ContactForm() {
             type="email"
             name="email"
             required
-            className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+            className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             placeholder="you@example.com"
           />
         </div>
@@ -93,7 +93,7 @@ export default function ContactForm() {
         <input
           type="text"
           name="domain"
-          className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+          className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent"
           placeholder="e.g. DigitalNomads.com"
         />
       </div>
@@ -105,7 +105,7 @@ export default function ContactForm() {
         <textarea
           name="message"
           rows={4}
-          className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent resize-none"
+          className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent resize-none"
           placeholder="Tell us about your interest or budget..."
         />
       </div>
@@ -119,7 +119,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full sm:w-auto px-8 py-2.5 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full sm:w-auto px-8 py-2.5 rounded-full bg-brand-blue text-white text-sm font-semibold hover:bg-brand-blue-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "submitting" ? "Sending…" : "Send Inquiry"}
       </button>
